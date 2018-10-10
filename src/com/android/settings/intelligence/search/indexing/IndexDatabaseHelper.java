@@ -162,7 +162,7 @@ public class IndexDatabaseHelper extends SQLiteOpenHelper {
                     ")";
     private static final String INSERT_BUILD_VERSION =
             "INSERT INTO " + Tables.TABLE_META_INDEX +
-                    " VALUES ('" + Build.VERSION.INCREMENTAL + "');";
+                    " VALUES ('" + Build.DATE + "');";
 
     private static final String SELECT_BUILD_VERSION =
             "SELECT " + MetaColumns.BUILD + " FROM " + Tables.TABLE_META_INDEX + " LIMIT 1;";
@@ -203,7 +203,7 @@ public class IndexDatabaseHelper extends SQLiteOpenHelper {
 
         Log.i(TAG, "Using schema version: " + db.getVersion());
 
-        if (!Build.VERSION.INCREMENTAL.equals(getBuildVersion(db))) {
+        if (!Build.DATE.equals(getBuildVersion(db))) {
             Log.w(TAG, "Index needs to be rebuilt as build-version is not the same");
             // We need to drop the tables and recreate them
             reconstruct(db);
@@ -288,7 +288,7 @@ public class IndexDatabaseHelper extends SQLiteOpenHelper {
      */
     static void setIndexed(Context context, List<ResolveInfo> providers) {
         final String localeStr = Locale.getDefault().toString();
-        final String fingerprint = Build.VERSION.INCREMENTAL;
+        final String fingerprint = Build.DATE;
         final String providerVersionedNames =
                 IndexDatabaseHelper.buildProviderVersionedNames(context, providers);
         context.getSharedPreferences(SHARED_PREFS_TAG, Context.MODE_PRIVATE)
@@ -309,7 +309,7 @@ public class IndexDatabaseHelper extends SQLiteOpenHelper {
      */
     static boolean isFullIndex(Context context, List<ResolveInfo> providers) {
         final String localeStr = Locale.getDefault().toString();
-        final String fingerprint = Build.VERSION.INCREMENTAL;
+        final String fingerprint = Build.DATE;
         final String providerVersionedNames =
                 IndexDatabaseHelper.buildProviderVersionedNames(context, providers);
         final SharedPreferences prefs = context
